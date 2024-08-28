@@ -19,8 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/signin', UserAuth::class);
-Route::get('/dashboard', Dashboard::class);
+Route::prefix('user')->group(function () {
+    Route::get('/login', UserAuth::class);
+    Route::get('/dashboard', Dashboard::class);
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+         return "admin";});
+});
+
 
 // Route::middleware([
 //     'auth:sanctum',

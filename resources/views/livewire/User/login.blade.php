@@ -3,7 +3,7 @@
         <div class="justify-center">
             <img class="mx-auto" src="{{asset('/assets/img/logo.svg')}}">
 
-            <h1 class="my-4 text-3xl font-bold leading-none tracking-tight text-gray-900">IUM Space Reservation Platform</h1>
+            <h1 class="my-4 text-3xl font-bold leading-none tracking-tight text-gray-900">IUM Spaces</h1>
         </div>
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
