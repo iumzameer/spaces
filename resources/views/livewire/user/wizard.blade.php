@@ -23,7 +23,7 @@
             </div>
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mt-5">
                 <div class="mb-4">
-                    <select wire:model.lazy="company" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model.lazy="company" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Company/Institute</option>
                       <option value="company1">Company A</option>
                       <option value="company2">Company B</option>
@@ -44,17 +44,17 @@
         <section class="{{ $locationSection == false ? 'hidden' : 'block' }}">
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mt-5">
                 <div class="flex justify-between">
-                    <select wire:model="location" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model="location" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Location</option>
                       <option value="company1">Location A</option>
                       <option value="company2">Location B</option>
                     </select>
-                    <select wire:model="purpose" class="ml-5 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model="purpose" class="ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Purpose</option>
                       <option value="company1">Purpose 1</option>
                       <option value="company2">Purpose 2</option>
                     </select>
-                    <select wire:model="company" class="ml-5 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model="company" class="ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Duration</option>
                       <option value="company1">8 Hrs</option>
                       <option value="company2">12 Hrs</option>
@@ -102,13 +102,13 @@
                     </div>    
                 </div>
                 <div class="flex justify-between mt-10">
-                    <select wire:model="item" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model="item" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Item</option>
                       <option value="company1">Item 1</option>
                       <option value="company2">Item 2</option>
                       <option value="company2">Item 3</option>
                     </select>
-                    <input type="number" placeholder="Quantity" wire:model="qty" class="ml-5 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <input type="number" placeholder="Quantity" wire:model="qty" class="ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                     <input type="number" placeholder="Duration (Days)" wire:model="duration" class="ml-5 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                     <button class="w-1/6 py-3 bg-lime-500 text-white rounded hover:bg-lime-600" wire:click="addItem">Add Item</button>
                 </div>
