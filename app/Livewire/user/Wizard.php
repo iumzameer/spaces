@@ -19,7 +19,7 @@ class Wizard extends Component
 
     public function mount()
     {
-        \Auth::login(\App\Models\User::first());
+        // \Auth::login(\App\Models\User::first());
     }
 
     public function render()
