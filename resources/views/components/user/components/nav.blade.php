@@ -5,9 +5,10 @@
             <h1 class="text-xl font-semibold tracking-wide">IUM Spaces</h1>
         </div>
         <div class="space-x-8">
-            <a href="#" class="text-base font-medium hover:text-blue-500"> Reservations</a>
-            <a href="#" class="text-base font-medium hover:text-blue-500">Profile</a>
-            <a href="#" class="text-base font-medium hover:text-blue-500">Logout</a>
+            <a href="{{route('user.dashboard')}}" class="text-base font-medium hover:text-blue-500"> Dashboard</a>
+            <a href="{{route('user.reservations')}}" class="text-base font-medium hover:text-blue-500"> Reservations</a>
+            <a href="{{route('user.profile')}}" class="text-base font-medium hover:text-blue-500">Profile</a>
+            <a href="{{route('user.login')}}" class="text-base font-medium hover:text-blue-500">Logout</a>
         </div>
     </div>
 </nav>

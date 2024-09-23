@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\User\UserAuth;
 use App\Livewire\User\Dashboard;
+use App\Livewire\User\Wizard;
+use App\Livewire\User\Reservations;
+use App\Livewire\User\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +23,11 @@ Route::get('/', function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/login', UserAuth::class);
-    Route::get('/dashboard', Dashboard::class);
+    Route::get('/login', UserAuth::class)->name('user.login');
+    Route::get('/dashboard', Dashboard::class)->name('user.dashboard');
+    Route::get('/wizard', Wizard::class)->name('user.wizard');
+    Route::get('/reservations', Reservations::class)->name('user.reservations');
+    Route::get('/account', Profile::class)->name('user.profile');
 });
 
 Route::prefix('admin')->group(function () {

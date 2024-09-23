@@ -19,6 +19,7 @@
                     {{ $button }}
                 </button>
             </div>
+            <div class="bg-red-100 w-full rounded px-2 py-1 my-2 text-sm text-red-800 {{ $showError === true ? 'block' : 'hidden' }}">{{$msg}}</div>
         </div>
     </div>
 </div>
