@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\User\UserAuth;
-use App\Livewire\User\Dashboard;
-use App\Livewire\User\Wizard;
-use App\Livewire\User\Reservations;
-use App\Livewire\User\Profile;
+use App\Livewire\user\UserAuth;
+use App\Livewire\user\Dashboard;
+use App\Livewire\user\Wizard;
+use App\Livewire\user\Reservations;
+use App\Livewire\user\Profile;
 
 /*
 |--------------------------------------------------------------------------
