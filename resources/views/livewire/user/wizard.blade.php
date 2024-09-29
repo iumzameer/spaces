@@ -10,14 +10,14 @@
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
-                        <p class="text-lg"><span class="font-semibold">Name:</span> Ahmed Mohamed</p>
-                        <p class="text-lg"><span class="font-semibold">NID No:</span> A000000</p>
-                        <p class="text-lg"><span class="font-semibold">Contact:</span> 9999999</p>
+                        <p class="text-lg"><span class="font-semibold">Name:</span> {{\Auth::user()->name}}</p>
+                        <p class="text-lg"><span class="font-semibold">NID No:</span> {{\Auth::user()->nid}}</p>
+                        <p class="text-lg"><span class="font-semibold">Contact:</span> {{\Auth::user()->contact}}</p>
                     </div>
                     <div>
-                        <p class="text-lg"><span class="font-semibold">Email:</span> ahmed@mohamed.com</p>
-                        <p class="text-lg"><span class="font-semibold">Permanent Address:</span> Kanburudooge, K.Huraa</p>
-                        <p class="text-lg"><span class="font-semibold">Present Address:</span> H. Henveyruge, Male</p>
+                        <p class="text-lg"><span class="font-semibold">Email:</span> {{\Auth::user()->email}}</p>
+                        <p class="text-lg"><span class="font-semibold">Permanent Address:</span> {{\Auth::user()->paddress}}</p>
+                        <p class="text-lg"><span class="font-semibold">Present Address:</span> {{\Auth::user()->address}}</p>
                     </div>
                 </div>
             </div>

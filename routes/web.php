@@ -22,15 +22,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/login', UserAuth::class)->name('user.login');
+Route::get('/user/login', UserAuth::class)->name('user.login');
+
+Route::prefix('user')->middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('user.dashboard');
     Route::get('/wizard', Wizard::class)->name('user.wizard');
     Route::get('/reservations', Reservations::class)->name('user.reservations');
     Route::get('/account', Profile::class)->name('user.profile');
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/dashboard', function () {
          return "admin";});
 });
