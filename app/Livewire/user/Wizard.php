@@ -4,13 +4,16 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 
+use App\Models\Company;
+
 class Wizard extends Component
 {
     public $stepDescription = "Information";
     public $buttonText = "Next";
     public $step = 1;
     public $companySection = false;
-    public $company = false;
+    public $company = [];
+    public $companyId = null;
     public $infoSection = true;
     public $locationSection = false;
     public $confirmSection = false;
@@ -19,7 +22,7 @@ class Wizard extends Component
 
     public function mount()
     {
-        // \Auth::login(\App\Models\User::first());
+        $this->company = Company::first();
     }
 
     public function render()
@@ -27,9 +30,18 @@ class Wizard extends Component
         return view('livewire.user.wizard');
     }
 
-    public function updatedCompany()
+    public function updatedCompanyId()
     {
-        $this->companySection = true;
+        if(!is_null($this->companyId) && ($this->companyId != ""))
+        {
+            $this->company = Company::find($this->companyId);
+            $this->companySection = true; 
+        }
+        else
+        {
+            $this->companyId = null;
+            $this->companySection = false; 
+        }
     }
 
     public function nextStep()

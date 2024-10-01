@@ -23,43 +23,53 @@
             </div>
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mt-5">
                 <div class="mb-4">
-                    <select wire:model.lazy="company" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model.lazy="companyId" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Company/Institute</option>
-                      <option value="company1">Company A</option>
-                      <option value="company2">Company B</option>
+                      @foreach(\Auth::user()->companies as $companyx)
+                        <option value="{{ $companyx->id }}">{{ $companyx->name }}</option>
+                      @endforeach
                     </select>
                 </div>
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 {{ $companySection == false ? 'hidden' : 'block' }}">
                    <div>
-                        <p class="text-lg"><span class="font-semibold">Company/Institute Name:</span> Company A</p>
-                        <p class="text-lg"><span class="font-semibold">Contact:</span> 3000000</p>
+                        <p class="text-lg"><span class="font-semibold">Company/Institute Name:</span> {{$company->name}}</p>
+                        <p class="text-lg"><span class="font-semibold">Contact:</span> {{$company->contact}}</p>
                     </div>
                    <div>
-                        <p class="text-lg"><span class="font-semibold">Email:</span> info@company.com</p>
-                        <p class="text-lg"><span class="font-semibold">Address:</span> H. Companyge, Male</p>
+                        <p class="text-lg"><span class="font-semibold">Email:</span> {{$company->email}}</p>
+                        <p class="text-lg"><span class="font-semibold">Address:</span> {{$company->address}}</p>
                    </div>
                </div>
             </div>
         </section>
         <section class="{{ $locationSection == false ? 'hidden' : 'block' }}">
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mt-5">
-                <div class="flex justify-between">
-                    <select wire:model="location" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                <div class="grid grid-cols-4 gap-6">
+                    <select wire:model="location" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Location</option>
                       <option value="company1">Location A</option>
                       <option value="company2">Location B</option>
                     </select>
-                    <select wire:model="purpose" class="ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
+                    <select wire:model="purpose" class="w-full ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Purpose</option>
                       <option value="company1">Purpose 1</option>
                       <option value="company2">Purpose 2</option>
                     </select>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">From</label>
+                            <input type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline" required wire:model = "nid">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">From</label>
+                            <input type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline" required wire:model = "nid">
+                    </div>
                     <select wire:model="company" class="ml-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/5">
                       <option value="">Select Duration</option>
                       <option value="company1">8 Hrs</option>
                       <option value="company2">12 Hrs</option>
                       <option value="company2">24 Hrs</option>
                     </select>
+                    <div>
                     <button class="w-1/6 py-3 bg-teal-500 text-white rounded hover:bg-teal-600" wire:click="addLocation">Add Location</button>
                 </div>
             </div>
@@ -126,7 +136,9 @@
         </section>
         <div class="p-6 mt-5">
             <div class="flex justify-center">
-               <button class="w-1/6 mt-4 py-3 bg-green-500 text-white rounded hover:bg-green-600" wire:click="nextStep">{{$buttonText}}</button>
+                @if(!is_null($companyId))
+                    <button class="w-1/6 mt-4 py-3 bg-green-500 text-white rounded hover:bg-green-600" wire:click="nextStep">{{$buttonText}}</button>
+                @endif
            </div>
         </div>   
     </div>
