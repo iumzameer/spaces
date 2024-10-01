@@ -14,8 +14,22 @@ class Profile extends Component
     public $action = "none";
     public $editIndex = null;
     public $company_name, $company_contact, $company_email, $company_address;
+    public $name, $nid, $contact, $email, $address, $paddress;
     public $showError = false;
+    public $showProfileMsg = false;
+    public $profileMsgType = "error";
     public $msg;
+    public $company = "";
+
+    public function mount()
+    {
+        $this->name = Auth::user()->name;
+        $this->nid = Auth::user()->nid;
+        $this->contact = Auth::user()->contact;
+        $this->email = Auth::user()->email;
+        $this->address = Auth::user()->address;
+        $this->paddress = Auth::user()->paddress;
+    }
 
     public function render()
     {
@@ -117,5 +131,53 @@ class Profile extends Component
         $this->company_email = null;
         $this->company_address = null;
         $this->action = "add";
+    }
+
+    public function saveProfile()
+    {
+        $validator = Validator::make(
+        [
+            'name' => $this->name,
+            'nid' => $this->nid,
+            'contact' => $this->contact,
+            'email' => $this->email,
+            'address' => $this->address,
+            'paddress' => $this->paddress,
+        ],
+        [
+            'name' => 'required|string',
+            'nid' => 'required|string',
+            'contact' => 'required|digits:7',
+            'email' => 'required|email',
+            'address' => 'required|string',
+            'paddress' => 'required|string',
+        ],
+        [
+            'contact.required' => 'contact number is required.',
+            'contact.digits' => 'contact number invalid.'
+        ]);
+
+        if ($validator->fails())
+        {
+            $this->msg = $validator->errors()->first();
+            $this->showProfileMsg = true;
+            $this->profileMsgType = "error";
+        }
+        else
+        {
+            $user = Auth::user();
+
+            $user->name = $this->name;
+            $user->nid = $this->nid;
+            $user->contact = $this->contact;
+            $user->email = $this->email;
+            $user->address = $this->address;
+            $user->paddress = $this->paddress;
+            $user->save();
+
+            $this->msg = "Profile Saved!";
+            $this->showProfileMsg = true;
+            $this->profileMsgType = "success";
+        }
     }
 }

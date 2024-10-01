@@ -33,6 +33,7 @@ Route::prefix('user')->middleware([
     Route::get('/wizard', Wizard::class)->name('user.wizard');
     Route::get('/reservations', Reservations::class)->name('user.reservations');
     Route::get('/account', Profile::class)->name('user.profile');
+    Route::get('/logout', UserAuth::class)->name('user.logout');
 });
 
 Route::prefix('admin')->middleware([

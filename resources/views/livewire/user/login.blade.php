@@ -1,4 +1,5 @@
 <div class="font-sans text-gray-900 antialiased">
+    @php \Auth::logout(); @endphp
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div class="justify-center">
             <img class="mx-auto" src="{{asset('/assets/img/logo.svg')}}">

@@ -21,7 +21,7 @@
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">
-            
+            <!-- navgation menu here -->
 
             <!-- Page Heading -->
             @if (isset($header))
