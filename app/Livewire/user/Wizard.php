@@ -32,11 +32,12 @@ class Wizard extends Component
     public $showDuration = false;
     public $locationDetails = false;
     public $showLocationError = false;
+    public $showItemError = false;
     public $locations, $etypes, $tiers, $from, $to, $qty = 1;
     public $rlocations = [];
     public $ritems = [];
     public $items;
-    public $msg;
+    public $msg, $itemMsg;
 
     public function mount()
     {
@@ -195,6 +196,9 @@ class Wizard extends Component
         $item->qty = $this->qty;
 
         array_push($this->ritems, $item);
+
+        $this->itemId = null;
+        $this->qty = null;
     }
 
     public function updatedrType()

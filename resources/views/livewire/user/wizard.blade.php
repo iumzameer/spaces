@@ -146,6 +146,7 @@
                 <input type="number" placeholder="Quantity" wire:model="qty" class="mx-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/3" min="1" value="1">
                 <button class="w-1/3 py-3 bg-lime-500 text-white rounded hover:bg-lime-600" wire:click="addItem">Add Item</button>
             </div>
+            <div class="mt-5 col-span-5 bg-red-100 w-full rounded px-2 py-1 text-sm text-red-800 {{ $showItemError === true ? 'block' : 'hidden' }}">{{$itemMsg}}</div>
         </div>
         @endforeach
         <section class="{{ $confirmSection == false ? 'hidden' : 'block' }}">
