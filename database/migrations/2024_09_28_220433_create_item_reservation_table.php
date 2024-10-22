@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('item_reservation', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('from');
-            $table->timestamp('to');
+            $table->timestamp('from')->nullable();
+            $table->timestamp('to')->nullable();
+            $table->integer('qty')->default(1);
             $table->unsignedBigInteger('reservation_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('location_id');

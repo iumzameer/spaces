@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->string('status');
-            $table->string('remarks');
+            $table->string('status')->default('pending');
+            $table->string('remarks')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

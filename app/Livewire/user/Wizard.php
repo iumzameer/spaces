@@ -5,12 +5,14 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 use App\Models\Company;
 use App\Models\Location;
 use App\Models\Etype;
 use App\Models\Tier;
 use App\Models\Item;
+use App\Models\Reservation;
 
 class Wizard extends Component
 {
@@ -121,7 +123,7 @@ class Wizard extends Component
                 $this->step = 3;
                 break;
             case 3:
-                return redirect()->route('user.reservations');
+                $this->addReservation();
                 break;
             default:
                 $this->stepDescription = "Information";
@@ -130,6 +132,36 @@ class Wizard extends Component
                 $this->confirmSection = false;
                 break;
         }
+    }
+
+    public function addReservation()
+    {
+        $reservation = new Reservation;
+        $reservation->user_id = Auth::user()->id;
+
+        if(!is_null($this->companyId))
+        {
+            $reservation->company_id = $this->companyId;
+            $type = "normal";
+        }
+        else
+        {
+            $type = "commercial";
+        }
+
+        $reservation->save();
+
+        foreach ($this->rlocations as $key => $rlocation)
+        {
+            $reservation->locations()->attach($rlocation["location"]->id, ['type' => $type, 'etype_id' => $rlocation["etype"]->id, 'from' => $rlocation["from"], 'to' => $rlocation["to"]]);
+        }
+
+        foreach ($this->ritems as $key => $ritem)
+        {
+            $reservation->items()->attach($ritem["item"]->id, ['qty' => $ritem["qty"], 'location_id' => $ritem["locationId"]]);
+        }
+        
+        return redirect()->route('user.reservations');
     }
 
     public function addLocation()
@@ -163,42 +195,158 @@ class Wizard extends Component
         }
         else
         {
-            $this->showLocationError = false;
-            $location = Location::find($this->locationId);
-            $etype = Etype::find($this->etypeId);
+            $check = 0;
 
-            if(Carbon::parse($this->from)->diff(Carbon::parse($this->to))->days < 1)
+            foreach($this->rlocations as $location)
             {
-                $tier = Tier::find($this->tierId);
+                if($location["location"]->id == $this->locationId)
+                {
+                    $check = 1;
+                    break;
+                }
+            }
+
+            if($check == 0)
+            {
+                $this->showLocationError = false;
+                $location = Location::find($this->locationId);
+                $etype = Etype::find($this->etypeId);
+
+                if(Carbon::parse($this->from)->diff(Carbon::parse($this->to))->days < 1)
+                {
+                    $tier = Tier::find($this->tierId);
+                }
+                else
+                {
+                    $tier = Carbon::parse($this->from)->diff(Carbon::parse($this->to))->days;
+                }    
+
+                $rlocation = ["location" => $location, "etype" => $etype, "tier" => $tier, "from" => $this->from, "to" => $this->to];
+
+                array_push($this->rlocations, $rlocation);
+
+                $this->locationDetails = true;
+
+                $this->locationId = null;
+                $this->from = null;
+                $this->to = null;
+                $this->etypeId = null;
+                $this->tierId = null;
             }
             else
             {
-                $tier = Carbon::parse($this->from)->diff(Carbon::parse($this->to))->days;
-            }    
-
-            $rlocation = ["location" => $location, "etype" => $etype, "tier" => $tier];
-
-            array_push($this->rlocations, $rlocation);
-
-            $this->locationDetails = true;
-
-            $this->locationId = null;
-            $this->from = null;
-            $this->to = null;
-            $this->etypeId = null;
-            $this->tierId = null;
+                $this->msg = "Location already exists!";
+                $this->showLocationError = true;
+            }   
         }
+
+        $this->updateAmounts();
     }
 
-    public function addItem()
+    public function addItem($locationId)
     {
-        $item = Item::find($this->itemId);
-        $item->qty = $this->qty;
 
-        array_push($this->ritems, $item);
+        $validator = Validator::make(
+        [
+            'itemId' => $this->itemId,
+            'qty' => $this->qty
+        ],
+        [
+            'itemId' => 'required|exists:items,id',
+            'qty' => 'required'
+        ],
+        [
+            'itemId.required' => 'Item is required!',
+            'itemId.exists' => 'Item is invalid!',
+            'qty.required' => 'Quantity is required!'
+        ]);
 
-        $this->itemId = null;
-        $this->qty = null;
+        if ($validator->fails())
+        {
+            $this->itemMsg = $validator->errors()->first();
+            $this->showItemError = true;
+        }
+        else
+        {
+            $item["item"] = Item::find($this->itemId);
+            $item["qty"] = $this->qty;
+            $item["locationId"] = $locationId;
+            $item["sub"] = 0;
+
+            $check = 0;
+
+            foreach ($this->ritems as $key => $itemx)
+            {
+                if(($itemx["item"]->id == $this->itemId)&&($itemx["locationId"] == $locationId))
+                {
+                    $this->ritems[$key]["qty"] = $itemx["qty"] + $this->qty;
+                    $check = 1;
+                }
+            }
+
+            if($check == 0)
+            {
+                array_push($this->ritems, $item);
+            }
+
+            $this->itemId = null;
+            $this->qty = 1;
+        }
+
+        $this->updateAmounts();
+    }
+
+    public function updateAmounts()
+    {
+        foreach($this->rlocations as $key => $rlocation)
+        {
+            if(!isset($rlocation["tier"]->hrs))
+            {
+                $hrs = false;
+                $total = $rlocation["location"]->tiers()->where('hrs', 24)->first()->pivot->amount * $rlocation["tier"];
+            }
+            else
+            {
+                $hrs = true;
+                $total = $rlocation["location"]->tiers()->where('tier_id', $rlocation["tier"]->id)->first()->pivot->amount;
+            }
+
+            foreach ($this->ritems as $key => $item)
+            {
+                if($rlocation["location"]->id == $item["locationId"])
+                {
+                    if($hrs == false)
+                    {
+                        $sub = $item["item"]->tiers()->where('hrs', 24)->first()->pivot->amount * $rlocation["tier"] * $item["qty"];
+                    }
+                    else
+                    {
+                        $sub = $item["item"]->tiers()->where('tier_id', $rlocation["tier"]->id)->first()->pivot->amount * $item["qty"];
+                    }
+
+                    $this->ritems[$key]["sub"] = $sub;
+                    $total = $total + $sub;
+                }
+
+            }
+
+            $this->rlocations[$key]["location"]["total"] = $total;
+        }
+
+    }
+
+    public function deleteItem($itemId, $locationId)
+    {
+        foreach ($this->ritems as $key => $item)
+        {
+            if(($locationId == $item["locationId"]) && ($itemId == $item["item"]->id))
+            {
+                unset($this->ritems[$key]);
+                break;
+            }
+        }
+
+        $this->updateAmounts();
     }
 
     public function updatedrType()

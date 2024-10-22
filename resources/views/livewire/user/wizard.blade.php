@@ -108,6 +108,7 @@
                             {{$rlocation["tier"]->hrs}} Hrs
                         @endif
                     </p>
+                    <p class="text-lg"><span class="font-semibold">Total:</span> MVR {{number_format($rlocation["location"]["total"], 2, '.', '')}}</p>
                 </div>
                 <div class="col-span-2">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -119,16 +120,28 @@
                                 <th scope="col" class="px-6 py-3">
                                     Qty
                                 </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Subtotal
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($ritems as $ritem)
                             <tr>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {{$ritem->description}}
+                                    {{$ritem["item"]->description}}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{$ritem->qty}}
+                                    {{$ritem["qty"]}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    MVR {{number_format($ritem["sub"], 2, '.', '')}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="w-1/3 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="deleteItem({{$ritem['item']->id}},{{ $rlocation['location']->id}})">delete</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -144,12 +157,12 @@
                     @endforeach
                 </select>
                 <input type="number" placeholder="Quantity" wire:model="qty" class="mx-5 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/3" min="1" value="1">
-                <button class="w-1/3 py-3 bg-lime-500 text-white rounded hover:bg-lime-600" wire:click="addItem">Add Item</button>
+                <button class="w-1/3 py-3 bg-lime-500 text-white rounded hover:bg-lime-600" wire:click="addItem({{$rlocation['location']->id}})">Add Item</button>
             </div>
             <div class="mt-5 col-span-5 bg-red-100 w-full rounded px-2 py-1 text-sm text-red-800 {{ $showItemError === true ? 'block' : 'hidden' }}">{{$itemMsg}}</div>
         </div>
         @endforeach
-        <section class="{{ $confirmSection == false ? 'hidden' : 'block' }}">
+        <section class="{{ $confirmSection == false ? 'hidden' : 'block' }} max-h-[70vh] overflow-y-auto">
             <div class="p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 mt-5">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -157,6 +170,49 @@
                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
                 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
                 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br><br>
             </div>
         </section>
         <div class="p-6 mt-5">
