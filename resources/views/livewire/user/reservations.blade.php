@@ -3,6 +3,13 @@
     <x-user.components.nav />
 
     <div class="container mx-auto p-6">
+        <header class="flex items-center justify-between mb-8">
+            <h2 class="text-2xl font-semibold">Dashboard</h2>
+            <a href="{{ route('user.wizard') }}" class="px-6 py-2 text-white bg-blue-600 rounded-full shadow hover:bg-blue-700 focus:outline-none" wire:click="newReservation">
+                New Reservation
+            </a>
+        </header>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($reservations as $reservation)
                 <div class="bg-white shadow-lg rounded-lg p-6">

@@ -18,4 +18,14 @@ class Reservation extends Model
     {
         return $this->belongsToMany('App\Models\Item');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
 }
