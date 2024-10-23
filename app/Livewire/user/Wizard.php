@@ -153,7 +153,16 @@ class Wizard extends Component
 
         foreach ($this->rlocations as $key => $rlocation)
         {
-            $reservation->locations()->attach($rlocation["location"]->id, ['type' => $type, 'etype_id' => $rlocation["etype"]->id, 'from' => $rlocation["from"], 'to' => $rlocation["to"]]);
+            if(isset($rlocation["tier"]->hrs))
+            {
+                $tier_id = $rlocation["tier"]->id;
+            }
+            else
+            {
+                $tier_id = null;
+            }
+
+            $reservation->locations()->attach($rlocation["location"]->id, ['type' => $type, 'etype_id' => $rlocation["etype"]->id, 'from' => $rlocation["from"], 'to' => $rlocation["to"], 'tier_id' => $tier_id]);
         }
 
         foreach ($this->ritems as $key => $ritem)

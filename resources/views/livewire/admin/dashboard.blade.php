@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 @foreach($reservations as $reservation)
-                    <tr class="border-b hover:bg-gray-100">
+                    <tr class="hover:bg-gray-100">
                         <td class="py-3 px-4 text-sm text-gray-700">{{$reservation->id}}</td>
                         <td class="py-3 px-4 text-sm text-gray-700">{{$reservation->user->name}}</td>
                         <td class="py-3 px-4 text-sm text-gray-700">
@@ -33,6 +33,10 @@
                                     <span class="text-amber-600 py-1 px-1">Payment Pending</span>
                                 @break
 
+                                @case('process')
+                                    <span class="text-amber-600 py-1 px-1">Payment Verification Pending</span>
+                                @break
+
                                 @case('partial-payment')
                                     <span class="text-amber-600 py-1 px-1">Partial Payment Pending</span>
                                 @break
@@ -48,8 +52,18 @@
                         </td>
                         <td class="py-3 px-4 text-sm text-gray-700 text-center">
                             <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" wire:click="">View</button>
-                            <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" wire:click="">Approve</button>
-                            <button class="px-2 py-1 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="">Reject</button>
+                            @if($reservation->status == "pending")
+                                <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" wire:click="approveReservation({{$reservation->id}})">Approve</button>
+                                <button class="px-2 py-1 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="rejectReservation({{$reservation->id}})">Reject</button>
+                            @elseif($reservation->status == "process")
+                                <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" wire:click="approveReservation({{$reservation->id}})">Verify</button>
+                                <button class="px-2 py-1 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="rejectReservation({{$reservation->id}})">Decline</button>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-100 text-center">
+                        <td colspan="5">
+
                         </td>
                     </tr>
                 @endforeach

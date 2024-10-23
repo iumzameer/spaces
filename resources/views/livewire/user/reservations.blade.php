@@ -34,6 +34,11 @@
                             $color = "amber-600";
                             $txt = "Payment Pending";
                         }
+                        elseif($reservation->status == "process")
+                        {
+                            $color = "orange-500";
+                            $txt = "Processing";
+                        }
                         else
                         {
                             $color = "gray-400";
@@ -45,7 +50,8 @@
                     <div class="flex justify-center">
                         <button class="mt-4 py-1 px-2 bg-blue-500 text-white rounded hover:bg-blue-600">View</button>
                         @if($reservation->status == "payment")
-                            <button class="ml-2 mt-4 py-1 px-2 bg-green-500 text-white rounded hover:bg-green-600">Pay</button>
+                            <button class="ml-2 mt-4 py-1 px-2 bg-green-500 text-white rounded hover:bg-green-600" onclick="document.getElementById('{{$reservation->id}}-file').click()" wire:click="pay({{$reservation->id}})">Pay</button>
+                            <input class="hidden" type="file" wire:model="slip" id="{{$reservation->id}}-file">
                         @endif
                     </div>
                 </div>

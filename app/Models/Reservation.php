@@ -11,12 +11,12 @@ class Reservation extends Model
 
     public function locations()
     {
-        return $this->belongsToMany('App\Models\Location');
+        return $this->belongsToMany('App\Models\Location')->withPivot('from','to','type','etype_id','status');
     }
 
     public function items()
     {
-        return $this->belongsToMany('App\Models\Item');
+        return $this->belongsToMany('App\Models\Item')->withPivot('from','to','qty','status');
     }
 
     public function user()
@@ -27,5 +27,10 @@ class Reservation extends Model
     public function company()
     {
         return $this->belongsTo('App\Models\Company');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany('App\Models\Invoice');
     }
 }
