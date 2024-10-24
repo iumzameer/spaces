@@ -12,6 +12,9 @@ use App\Models\Line;
 class Dashboard extends Component
 {
     public $reservations;
+    public $url;
+    public $reserve;
+    public $slipModal = false;
 
     public function mount()
     {
@@ -118,5 +121,62 @@ class Dashboard extends Component
         $invoice->save();
 
         $this->mount();
+    }
+
+    public function openSlipModal($id)
+    {
+        $this->reserve = Reservation::find($id);
+
+        $this->url = $this->reserve->invoices()->where('status','process')->first()->payments()->first()->file;
+        $this->slipModal = true;
+    }
+
+    public function closeSlipModal()
+    {
+        $this->url = null;
+        $this->slipModal = false;
+    }
+
+    public function verifySlip()
+    {
+        $invoice = $this->reserve->invoices()->where('status','process')->first();
+        $payment = $this->reserve->invoices()->where('status','process')->first()->payments()->first();
+
+        $invoice->status = "paid";
+        $payment->status = "paid";
+        $this->reserve->status = "confirmed";
+
+        $invoice->save();
+        $payment->save();
+        $this->reserve->save();
+
+        foreach ($this->reserve->items as $key => $item)
+        {
+            $this->reserve->items()->updateExistingPivot($item->id, ['status' => 'confirmed']);
+        }
+
+        foreach ($this->reserve->locations as $key => $location)
+        {
+            $this->reserve->locations()->updateExistingPivot($location->id, ['status' => 'confirmed']);
+        }
+
+        $this->mount();
+        $this->closeSlipModal();
+    }
+
+    public function rejectSlip()
+    {
+        $invoice = $this->reserve->invoices()->where('status','process')->first();
+        $payment = $this->reserve->invoices()->where('status','process')->first()->payments()->first();
+
+        $invoice->status = "pending";
+        $payment->delete();
+        $this->reserve->status = "payment";
+
+        $invoice->save();
+        $this->reserve->save();
+
+        $this->mount();
+        $this->closeSlipModal();
     }
 }

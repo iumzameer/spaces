@@ -19,10 +19,10 @@
                     <p class="text-gray-600 my-3"><strong>Date:</strong> {{$reservation->created_at->format('jS M, Y')}}</p>
                     
                     @php
-                        if($reservation->status == "approved")
+                        if($reservation->status == "confirmed")
                         {
                             $color = "green-600";
-                            $txt = "Approved";
+                            $txt = "Confirmed";
                         }
                         elseif($reservation->status == "rejected")
                         {

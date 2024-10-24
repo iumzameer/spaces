@@ -6,7 +6,10 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('admin.dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
+                        <div class="flex items-center">
+            <img src="{{asset('/assets/img/logo.svg')}}" class="w-[48px] mr-2">
+            <h1 class="text-xl font-semibold tracking-wide">IUM Spaces</h1>
+        </div>
                     </a>
                 </div>
 

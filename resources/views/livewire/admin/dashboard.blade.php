@@ -56,8 +56,7 @@
                                 <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" wire:click="approveReservation({{$reservation->id}})">Approve</button>
                                 <button class="px-2 py-1 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="rejectReservation({{$reservation->id}})">Reject</button>
                             @elseif($reservation->status == "process")
-                                <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" wire:click="approveReservation({{$reservation->id}})">Verify</button>
-                                <button class="px-2 py-1 bg-rose-500 text-white rounded hover:bg-rose-600" wire:click="rejectReservation({{$reservation->id}})">Decline</button>
+                                <button class="px-2 py-1 bg-teal-500 text-white rounded hover:bg-teal-600" wire:click="openSlipModal({{$reservation->id}})">Verify Slip</button>
                             @endif
                         </td>
                     </tr>
@@ -69,5 +68,27 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 {{ $slipModal == false ? 'hidden' : '' }} transition-all">
+        <!-- Modal Content -->
+        <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3 relative">
+            <!-- Close Button -->
+            <h2 class="text-lg font-semibold p-4">Slip Verification</h2>
+            <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700" wire:click="closeSlipModal">
+                x
+            </button>
+
+            <div class="p-6">
+                <img src="{{url('/')}}/storage/{{$url}}" alt="Portrait" class="w-full rounded-lg mb-4">
+                
+            </div>
+
+            <div class="px-6 pb-6 flex justify-center gap-2">
+                <button class="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600" wire:click="verifySlip">Verify</button>
+                <button class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600" wire:click="rejectSlip">Reject</button>
+                <button class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400" wire:click="closeSlipModal">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -32,7 +32,7 @@ class Reservations extends Component
         $reservation = Reservation::find($this->reservationId);
 
         $invoice = $reservation->invoices()->where('status','pending')->first();
-        $path = $this->slip->storePublicly('slips');
+        $path = $this->slip->store('slips', 'public');
 
         $payment = new Payment;
         $payment->amount = $invoice->amount;
@@ -45,6 +45,8 @@ class Reservations extends Component
 
         $reservation->status = "process";
         $reservation->save();
+
+        $this->mount();
     }
 
     public function pay($id)

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
+
+    public function payments()
+    {
+        return $this->hasMany('App\Models\Payment');
+    }
 }
